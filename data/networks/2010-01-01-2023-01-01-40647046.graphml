@@ -1,0 +1,370 @@
+<?xml version='1.0' encoding='utf-8'?>
+<graphml xmlns="http://graphml.graphdrawing.org/xmlns" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://graphml.graphdrawing.org/xmlns http://graphml.graphdrawing.org/xmlns/1.0/graphml.xsd"><key id="d4" for="edge" attr.name="weight" attr.type="float"/>
+<key id="d3" for="node" attr.name="name" attr.type="string"/>
+<key id="d2" for="graph" attr.name="end_date" attr.type="string"/>
+<key id="d1" for="graph" attr.name="start_date" attr.type="string"/>
+<key id="d0" for="graph" attr.name="tickers" attr.type="string"/>
+<graph edgedefault="undirected"><data key="d0">AAPL,MSFT,AMZN,GOOGL,META,NVDA,BRK-B,JPM,XOM,UNH,V,MA,HD,PG,KO</data>
+<data key="d1">2010-01-01</data>
+<data key="d2">2023-01-01</data>
+<node id="AAPL">
+  <data key="d3">Apple</data>
+</node>
+<node id="MSFT">
+  <data key="d3">Microsoft</data>
+</node>
+<node id="AMZN">
+  <data key="d3">Amazon com</data>
+</node>
+<node id="GOOGL">
+  <data key="d3">Alphabet</data>
+</node>
+<node id="META">
+  <data key="d3">Meta Platforms</data>
+</node>
+<node id="NVDA">
+  <data key="d3">NVIDIA</data>
+</node>
+<node id="BRK-B">
+  <data key="d3">Berkshire Hathaway</data>
+</node>
+<node id="JPM">
+  <data key="d3">JPMorgan Chase &amp;</data>
+</node>
+<node id="XOM">
+  <data key="d3">Exxon Mobil</data>
+</node>
+<node id="UNH">
+  <data key="d3">UnitedHealth Group</data>
+</node>
+<node id="V">
+  <data key="d3">Visa</data>
+</node>
+<node id="MA">
+  <data key="d3">Mastercard</data>
+</node>
+<node id="HD">
+  <data key="d3">The Home Depot</data>
+</node>
+<node id="PG">
+  <data key="d3">The Procter &amp; Gamble</data>
+</node>
+<node id="KO">
+  <data key="d3">The Coca-Cola</data>
+</node>
+<edge source="AAPL" target="MSFT">
+  <data key="d4">0.5976614004906856</data>
+</edge>
+<edge source="AAPL" target="AMZN">
+  <data key="d4">0.49016122462931333</data>
+</edge>
+<edge source="AAPL" target="GOOGL">
+  <data key="d4">0.5645780191934</data>
+</edge>
+<edge source="AAPL" target="META">
+  <data key="d4">0.43455774228081195</data>
+</edge>
+<edge source="AAPL" target="NVDA">
+  <data key="d4">0.50776376980284</data>
+</edge>
+<edge source="AAPL" target="BRK-B">
+  <data key="d4">0.4773582637796897</data>
+</edge>
+<edge source="AAPL" target="JPM">
+  <data key="d4">0.41102458547225623</data>
+</edge>
+<edge source="AAPL" target="XOM">
+  <data key="d4">0.3347652960642341</data>
+</edge>
+<edge source="AAPL" target="UNH">
+  <data key="d4">0.405216688694143</data>
+</edge>
+<edge source="AAPL" target="V">
+  <data key="d4">0.49034220010477747</data>
+</edge>
+<edge source="AAPL" target="MA">
+  <data key="d4">0.5238275581742337</data>
+</edge>
+<edge source="AAPL" target="HD">
+  <data key="d4">0.47594399402254944</data>
+</edge>
+<edge source="AAPL" target="PG">
+  <data key="d4">0.36191901364947504</data>
+</edge>
+<edge source="AAPL" target="KO">
+  <data key="d4">0.3584193513206971</data>
+</edge>
+<edge source="MSFT" target="AMZN">
+  <data key="d4">0.5642274033136716</data>
+</edge>
+<edge source="MSFT" target="GOOGL">
+  <data key="d4">0.6518175886016015</data>
+</edge>
+<edge source="MSFT" target="META">
+  <data key="d4">0.46201079921407234</data>
+</edge>
+<edge source="MSFT" target="NVDA">
+  <data key="d4">0.5732602471745981</data>
+</edge>
+<edge source="MSFT" target="BRK-B">
+  <data key="d4">0.540896326620359</data>
+</edge>
+<edge source="MSFT" target="JPM">
+  <data key="d4">0.4833631951869952</data>
+</edge>
+<edge source="MSFT" target="XOM">
+  <data key="d4">0.3777303103428645</data>
+</edge>
+<edge source="MSFT" target="UNH">
+  <data key="d4">0.460228446653074</data>
+</edge>
+<edge source="MSFT" target="V">
+  <data key="d4">0.5579631367650851</data>
+</edge>
+<edge source="MSFT" target="MA">
+  <data key="d4">0.5732101693462334</data>
+</edge>
+<edge source="MSFT" target="HD">
+  <data key="d4">0.5444469656992127</data>
+</edge>
+<edge source="MSFT" target="PG">
+  <data key="d4">0.4394177114780704</data>
+</edge>
+<edge source="MSFT" target="KO">
+  <data key="d4">0.43220004649607635</data>
+</edge>
+<edge source="AMZN" target="GOOGL">
+  <data key="d4">0.5995268744963365</data>
+</edge>
+<edge source="AMZN" target="META">
+  <data key="d4">0.4917839185876414</data>
+</edge>
+<edge source="AMZN" target="NVDA">
+  <data key="d4">0.47027031607016956</data>
+</edge>
+<edge source="AMZN" target="BRK-B">
+  <data key="d4">0.3955967482758162</data>
+</edge>
+<edge source="AMZN" target="JPM">
+  <data key="d4">0.3269019447813308</data>
+</edge>
+<edge source="AMZN" target="XOM">
+  <data key="d4">0.25345196786868507</data>
+</edge>
+<edge source="AMZN" target="UNH">
+  <data key="d4">0.32226293092270547</data>
+</edge>
+<edge source="AMZN" target="V">
+  <data key="d4">0.44699201532001026</data>
+</edge>
+<edge source="AMZN" target="MA">
+  <data key="d4">0.475252862384045</data>
+</edge>
+<edge source="AMZN" target="HD">
+  <data key="d4">0.4141364469051443</data>
+</edge>
+<edge source="AMZN" target="PG">
+  <data key="d4">0.2367978636750157</data>
+</edge>
+<edge source="AMZN" target="KO">
+  <data key="d4">0.2642031954846748</data>
+</edge>
+<edge source="GOOGL" target="META">
+  <data key="d4">0.5425478770293772</data>
+</edge>
+<edge source="GOOGL" target="NVDA">
+  <data key="d4">0.5212147573014049</data>
+</edge>
+<edge source="GOOGL" target="BRK-B">
+  <data key="d4">0.5050137485178456</data>
+</edge>
+<edge source="GOOGL" target="JPM">
+  <data key="d4">0.4425435397530717</data>
+</edge>
+<edge source="GOOGL" target="XOM">
+  <data key="d4">0.3730391198830703</data>
+</edge>
+<edge source="GOOGL" target="UNH">
+  <data key="d4">0.4133437409211753</data>
+</edge>
+<edge source="GOOGL" target="V">
+  <data key="d4">0.5419026516548922</data>
+</edge>
+<edge source="GOOGL" target="MA">
+  <data key="d4">0.5580858292484724</data>
+</edge>
+<edge source="GOOGL" target="HD">
+  <data key="d4">0.48514184383019515</data>
+</edge>
+<edge source="GOOGL" target="PG">
+  <data key="d4">0.3565668123891015</data>
+</edge>
+<edge source="GOOGL" target="KO">
+  <data key="d4">0.3798615533581656</data>
+</edge>
+<edge source="META" target="NVDA">
+  <data key="d4">0.4228502829192638</data>
+</edge>
+<edge source="META" target="BRK-B">
+  <data key="d4">0.34428793101179067</data>
+</edge>
+<edge source="META" target="JPM">
+  <data key="d4">0.2985952968091272</data>
+</edge>
+<edge source="META" target="XOM">
+  <data key="d4">0.20101764539464873</data>
+</edge>
+<edge source="META" target="UNH">
+  <data key="d4">0.26432108221301087</data>
+</edge>
+<edge source="META" target="V">
+  <data key="d4">0.4189738171868915</data>
+</edge>
+<edge source="META" target="MA">
+  <data key="d4">0.42860587438504677</data>
+</edge>
+<edge source="META" target="HD">
+  <data key="d4">0.3505118157245102</data>
+</edge>
+<edge source="META" target="PG">
+  <data key="d4">0.21133587327703837</data>
+</edge>
+<edge source="META" target="KO">
+  <data key="d4">0.20743470400782368</data>
+</edge>
+<edge source="NVDA" target="BRK-B">
+  <data key="d4">0.4251693564259473</data>
+</edge>
+<edge source="NVDA" target="JPM">
+  <data key="d4">0.3890216125755095</data>
+</edge>
+<edge source="NVDA" target="XOM">
+  <data key="d4">0.2985322748126365</data>
+</edge>
+<edge source="NVDA" target="UNH">
+  <data key="d4">0.33978739037039646</data>
+</edge>
+<edge source="NVDA" target="V">
+  <data key="d4">0.47487135552060017</data>
+</edge>
+<edge source="NVDA" target="MA">
+  <data key="d4">0.4955246113185404</data>
+</edge>
+<edge source="NVDA" target="HD">
+  <data key="d4">0.44139394637753426</data>
+</edge>
+<edge source="NVDA" target="PG">
+  <data key="d4">0.2680137915738414</data>
+</edge>
+<edge source="NVDA" target="KO">
+  <data key="d4">0.26632538069209877</data>
+</edge>
+<edge source="BRK-B" target="JPM">
+  <data key="d4">0.7450307489162359</data>
+</edge>
+<edge source="BRK-B" target="XOM">
+  <data key="d4">0.5992101554363327</data>
+</edge>
+<edge source="BRK-B" target="UNH">
+  <data key="d4">0.5334134476769408</data>
+</edge>
+<edge source="BRK-B" target="V">
+  <data key="d4">0.5856345361932707</data>
+</edge>
+<edge source="BRK-B" target="MA">
+  <data key="d4">0.5984975446663788</data>
+</edge>
+<edge source="BRK-B" target="HD">
+  <data key="d4">0.5822956463417428</data>
+</edge>
+<edge source="BRK-B" target="PG">
+  <data key="d4">0.4929840943717218</data>
+</edge>
+<edge source="BRK-B" target="KO">
+  <data key="d4">0.5694360756252702</data>
+</edge>
+<edge source="JPM" target="XOM">
+  <data key="d4">0.5777005470171281</data>
+</edge>
+<edge source="JPM" target="UNH">
+  <data key="d4">0.47619031485361957</data>
+</edge>
+<edge source="JPM" target="V">
+  <data key="d4">0.5405590254940561</data>
+</edge>
+<edge source="JPM" target="MA">
+  <data key="d4">0.5525846596863128</data>
+</edge>
+<edge source="JPM" target="HD">
+  <data key="d4">0.5181188232107694</data>
+</edge>
+<edge source="JPM" target="PG">
+  <data key="d4">0.38255891196572167</data>
+</edge>
+<edge source="JPM" target="KO">
+  <data key="d4">0.47026393903441477</data>
+</edge>
+<edge source="XOM" target="UNH">
+  <data key="d4">0.40505111514677483</data>
+</edge>
+<edge source="XOM" target="V">
+  <data key="d4">0.4443107595428932</data>
+</edge>
+<edge source="XOM" target="MA">
+  <data key="d4">0.4657290691600696</data>
+</edge>
+<edge source="XOM" target="HD">
+  <data key="d4">0.3954444547623199</data>
+</edge>
+<edge source="XOM" target="PG">
+  <data key="d4">0.32997219584602056</data>
+</edge>
+<edge source="XOM" target="KO">
+  <data key="d4">0.45100830457152985</data>
+</edge>
+<edge source="UNH" target="V">
+  <data key="d4">0.4478041707655452</data>
+</edge>
+<edge source="UNH" target="MA">
+  <data key="d4">0.45591733247297633</data>
+</edge>
+<edge source="UNH" target="HD">
+  <data key="d4">0.47557356172331355</data>
+</edge>
+<edge source="UNH" target="PG">
+  <data key="d4">0.3971642864863763</data>
+</edge>
+<edge source="UNH" target="KO">
+  <data key="d4">0.42553510803522926</data>
+</edge>
+<edge source="V" target="MA">
+  <data key="d4">0.8512634902691449</data>
+</edge>
+<edge source="V" target="HD">
+  <data key="d4">0.5193869535016634</data>
+</edge>
+<edge source="V" target="PG">
+  <data key="d4">0.39969722062953017</data>
+</edge>
+<edge source="V" target="KO">
+  <data key="d4">0.45748187865857914</data>
+</edge>
+<edge source="MA" target="HD">
+  <data key="d4">0.5213674372791208</data>
+</edge>
+<edge source="MA" target="PG">
+  <data key="d4">0.393712998013374</data>
+</edge>
+<edge source="MA" target="KO">
+  <data key="d4">0.47532957612666754</data>
+</edge>
+<edge source="HD" target="PG">
+  <data key="d4">0.4499651498484873</data>
+</edge>
+<edge source="HD" target="KO">
+  <data key="d4">0.4660599084528696</data>
+</edge>
+<edge source="PG" target="KO">
+  <data key="d4">0.6073494542396701</data>
+</edge>
+</graph></graphml>
