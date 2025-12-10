@@ -21,10 +21,25 @@ app = FastAPI(title="Stock Galaxy", version="0.1.0")
 cache = PriceCache()
 
 
+def _normalize_tickers(tickers: Iterable[str]) -> List[str]:
+    normalized: List[str] = []
+    for ticker in tickers:
+        cleaned = ticker.strip().upper()
+        if cleaned:
+            normalized.append(cleaned)
+    deduped = list(dict.fromkeys(normalized))
+    if not deduped:
+        raise HTTPException(status_code=400, detail="At least one ticker must be provided.")
+    return deduped
+
+
 def _compute_correlation_graph(tickers: Iterable[str], window_days: int) -> Tuple[nx.Graph, pd.DataFrame]:
+    tickers_list = _normalize_tickers(tickers)
+    if len(tickers_list) < 2:
+        raise HTTPException(status_code=400, detail="At least two tickers are required to compute correlations.")
     today = date.today()
     start = today - timedelta(days=window_days + 5)
-    prices = cache.get_prices(tickers, start.isoformat(), today.isoformat())
+    prices = cache.get_prices(tickers_list, start.isoformat(), today.isoformat())
     if prices.empty:
         raise HTTPException(status_code=400, detail="No price data available for requested window.")
     prices = prices.sort_index().ffill()
@@ -126,6 +141,7 @@ def _prepare_payload(graph: nx.Graph, returns: pd.DataFrame, window_days: int) -
             "end": today,
             "window_days": window_days,
             "tickers": list(graph.nodes()),
+            "default_tickers": list(default_tickers),
         },
     }
 
@@ -139,6 +155,16 @@ def galaxy(
     graph, returns = _compute_correlation_graph(tickers_use, window_days)
     payload = _prepare_payload(graph, returns, window_days)
     return payload
+
+
+@app.get("/api/tickers")
+def list_default_tickers() -> Dict[str, Dict]:
+    tickers_list = _normalize_tickers(default_tickers)
+    metadata = cache.get_company_metadata(tickers_list)
+    return {
+        "tickers": tickers_list,
+        "metadata": metadata,
+    }
 
 
 @app.get("/", response_class=HTMLResponse)

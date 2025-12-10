@@ -10,101 +10,191 @@
       integrity="sha512-IRZ8eIruoPbXsXQuicpnEuhDhagGzIB5VkDdUlvf7SgGbIu5d51lJ+mHuYCaNy1jhv9Q1kcY2Azc4J5kt52n1g=="
       crossorigin="anonymous"
     />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap"
+    />
     <style>
       :root {
-        --bg: #0b1120;
-        --panel: #111827;
+        --bg: radial-gradient(circle at 20% 20%, rgba(56, 189, 248, 0.08), transparent 25%),
+          radial-gradient(circle at 80% 10%, rgba(168, 85, 247, 0.08), transparent 25%),
+          #050815;
+        --panel: rgba(12, 18, 40, 0.7);
+        --panel-border: 1px solid rgba(255, 255, 255, 0.06);
         --text: #e5e7eb;
         --muted: #9ca3af;
         --accent: #38bdf8;
+        --accent-2: #a855f7;
         --danger: #f87171;
+        --glass: rgba(255, 255, 255, 0.04);
       }
       * {
         box-sizing: border-box;
       }
       body {
         margin: 0;
-        font-family: "Inter", system-ui, -apple-system, sans-serif;
+        font-family: "Space Grotesk", "Inter", system-ui, -apple-system, sans-serif;
         background: var(--bg);
         color: var(--text);
-        display: grid;
-        grid-template-columns: 320px 1fr;
-        grid-template-rows: 70px 1fr;
-        height: 100vh;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
       }
       header {
-        grid-column: 1 / span 2;
-        padding: 16px 20px;
-        background: var(--panel);
         display: flex;
         align-items: center;
         justify-content: space-between;
-        border-bottom: 1px solid #1f2937;
+        padding: 16px 22px;
+        position: sticky;
+        top: 0;
+        z-index: 10;
+        background: linear-gradient(90deg, rgba(8, 47, 73, 0.6), rgba(15, 23, 42, 0.7));
+        border-bottom: var(--panel-border);
+        backdrop-filter: blur(12px);
       }
       header h1 {
         margin: 0;
-        font-size: 20px;
-        letter-spacing: 0.2px;
+        font-size: 22px;
+        letter-spacing: 0.3px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      header h1 .pulse {
+        width: 12px;
+        height: 12px;
+        background: radial-gradient(circle, #22d3ee, #0ea5e9 40%, rgba(14, 165, 233, 0.1));
+        border-radius: 50%;
+        position: relative;
+        box-shadow: 0 0 24px rgba(56, 189, 248, 0.8);
+        animation: pulse 2s infinite;
+      }
+      @keyframes pulse {
+        0% {
+          transform: scale(1);
+          opacity: 1;
+        }
+        50% {
+          transform: scale(1.3);
+          opacity: 0.7;
+        }
+        100% {
+          transform: scale(1);
+          opacity: 1;
+        }
       }
       #meta {
         font-size: 13px;
         color: var(--muted);
       }
+      .layout {
+        display: grid;
+        grid-template-columns: 380px 1fr;
+        gap: 16px;
+        padding: 16px 16px 20px;
+        flex: 1;
+      }
       aside {
+        background: var(--panel);
+        border: var(--panel-border);
+        border-radius: 16px;
         padding: 16px;
-        border-right: 1px solid #1f2937;
-        background: linear-gradient(180deg, #0f172a 0%, #0b1120 100%);
-        overflow-y: auto;
+        box-shadow: 0 20px 70px rgba(0, 0, 0, 0.35);
+        backdrop-filter: blur(18px);
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
       }
       .control {
-        margin-bottom: 18px;
+        background: var(--glass);
+        border-radius: 12px;
+        padding: 12px 12px 14px;
+        border: 1px solid rgba(255, 255, 255, 0.06);
+      }
+      .control h3 {
+        margin: 0 0 8px;
+        font-size: 14px;
+        letter-spacing: 0.2px;
+        color: #cbd5e1;
       }
       label {
         display: block;
-        font-size: 13px;
+        font-size: 12px;
         color: var(--muted);
         margin-bottom: 8px;
       }
       input[type="range"] {
         width: 100%;
+        accent-color: var(--accent);
       }
       .pill {
         display: inline-flex;
         align-items: center;
         gap: 6px;
         padding: 8px 10px;
-        background: #1f2937;
+        background: #111827;
         border-radius: 10px;
         font-size: 13px;
         margin-right: 8px;
+        border: 1px solid rgba(255, 255, 255, 0.06);
       }
       main {
         position: relative;
+        background: linear-gradient(145deg, rgba(15, 23, 42, 0.8), rgba(6, 8, 20, 0.9));
+        border: var(--panel-border);
+        border-radius: 18px;
+        overflow: hidden;
+        box-shadow: 0 30px 80px rgba(0, 0, 0, 0.4);
       }
       #graph {
         width: 100%;
         height: 100%;
       }
+      .hud {
+        position: absolute;
+        top: 14px;
+        left: 14px;
+        right: 14px;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+        gap: 10px;
+        pointer-events: none;
+      }
+      .hud-card {
+        background: rgba(15, 23, 42, 0.62);
+        border: 1px solid rgba(255, 255, 255, 0.05);
+        border-radius: 10px;
+        padding: 10px 12px;
+        font-size: 12px;
+        color: var(--muted);
+        backdrop-filter: blur(8px);
+      }
+      .hud-card strong {
+        display: block;
+        color: var(--text);
+        font-size: 14px;
+      }
       #tooltip {
         position: absolute;
-        background: rgba(17, 24, 39, 0.92);
+        background: rgba(17, 24, 39, 0.95);
         color: var(--text);
-        padding: 10px 12px;
-        border-radius: 10px;
+        padding: 12px 14px;
+        border-radius: 12px;
         font-size: 13px;
         pointer-events: none;
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.45);
-        min-width: 240px;
-        border: 1px solid #1f2937;
+        box-shadow: 0 20px 50px rgba(0, 0, 0, 0.45);
+        min-width: 260px;
+        border: 1px solid rgba(255, 255, 255, 0.06);
       }
       #tooltip .sparkline {
-        height: 40px;
+        height: 42px;
         width: 100%;
       }
       #legend {
         display: flex;
         flex-wrap: wrap;
-        gap: 6px;
+        gap: 8px;
         margin-top: 8px;
       }
       .legend-item {
@@ -113,6 +203,10 @@
         gap: 6px;
         font-size: 12px;
         color: var(--muted);
+        background: rgba(255, 255, 255, 0.04);
+        padding: 6px 8px;
+        border-radius: 8px;
+        border: 1px solid rgba(255, 255, 255, 0.05);
       }
       .legend-swatch {
         width: 12px;
@@ -127,60 +221,177 @@
         font-size: 12px;
       }
       .badge {
-        background: #14b8a6;
+        background: linear-gradient(120deg, #22d3ee, #38bdf8);
         color: #0b1120;
         padding: 4px 8px;
         border-radius: 999px;
-        font-weight: 600;
+        font-weight: 700;
         font-size: 12px;
       }
-      button {
-        width: 100%;
-        background: #1d4ed8;
+      .chip-set {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+      .chip {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 6px 10px;
+        background: rgba(56, 189, 248, 0.1);
+        color: var(--text);
+        border-radius: 999px;
+        font-size: 12px;
+        border: 1px solid rgba(56, 189, 248, 0.35);
+      }
+      .chip button {
         border: none;
-        color: white;
+        background: transparent;
+        color: var(--text);
+        cursor: pointer;
+        padding: 0;
+      }
+      .ticker-input {
+        display: grid;
+        grid-template-columns: 1fr auto;
+        gap: 8px;
+      }
+      .ticker-input input {
+        background: rgba(255, 255, 255, 0.06);
+        border: 1px solid rgba(255, 255, 255, 0.08);
         border-radius: 10px;
         padding: 12px;
-        font-weight: 600;
-        cursor: pointer;
-        transition: background 0.2s ease;
+        color: var(--text);
+        font-size: 14px;
       }
-      button:hover {
-        background: #2563eb;
+      button.cta {
+        width: 100%;
+        background: linear-gradient(135deg, #0ea5e9, #6366f1);
+        border: none;
+        color: white;
+        border-radius: 12px;
+        padding: 12px;
+        font-weight: 700;
+        cursor: pointer;
+        transition: transform 0.1s ease, box-shadow 0.1s ease;
+        box-shadow: 0 10px 30px rgba(79, 70, 229, 0.35);
+      }
+      button.secondary {
+        background: rgba(255, 255, 255, 0.06);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        color: var(--text);
+      }
+      button.cta:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 10px 30px rgba(59, 130, 246, 0.45);
+      }
+      .status {
+        font-size: 12px;
+        color: var(--muted);
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .status .dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+      }
+      .status.info .dot {
+        background: #22d3ee;
+        box-shadow: 0 0 10px rgba(34, 211, 238, 0.7);
+      }
+      .status.error .dot {
+        background: var(--danger);
+        box-shadow: 0 0 10px rgba(248, 113, 113, 0.7);
+      }
+      .status.success .dot {
+        background: #22c55e;
+        box-shadow: 0 0 10px rgba(34, 197, 94, 0.7);
+      }
+      @media (max-width: 1100px) {
+        .layout {
+          grid-template-columns: 1fr;
+        }
+        aside {
+          order: 2;
+        }
+        main {
+          min-height: 60vh;
+        }
       }
     </style>
   </head>
   <body>
     <header>
       <div>
-        <h1>Stock Galaxy</h1>
-        <div id="meta">Loading...</div>
+        <h1><span class="pulse"></span> Stock Galaxy</h1>
+        <div id="meta">Calibrating sensors…</div>
       </div>
-      <div class="pill"><i class="fa-solid fa-burst"></i> Louvain-style clusters & centrality halos</div>
+      <div class="pill"><i class="fa-solid fa-burst"></i> Louvain-style clusters · centrality halos · live filters</div>
     </header>
-    <aside>
-      <div class="control">
-        <label for="window">Lookback window (<span id="windowLabel">90</span> days)</label>
-        <input id="window" type="range" min="30" max="365" step="15" value="90" />
-      </div>
-      <div class="control">
-        <label for="corr">Minimum |correlation|: <span id="corrLabel">0.3</span></label>
-        <input id="corr" type="range" min="0" max="1" step="0.05" value="0.3" />
-      </div>
-      <div class="control">
-        <div class="pill" id="nodeSize">Node size: degree</div>
-        <div class="pill" id="edgeStrength">Edge: |corr| opacity & width</div>
-      </div>
-      <div class="control">
-        <div class="badge" id="clusterLabel">Communities: 0</div>
-      </div>
-      <button id="reload">Reload galaxy</button>
-      <div id="legend"></div>
-    </aside>
-    <main>
-      <svg id="graph"></svg>
-      <div id="tooltip" style="display: none"></div>
-    </main>
+    <div class="layout">
+      <aside>
+        <div class="control">
+          <h3>Market scope</h3>
+          <label for="window">Lookback window (<span id="windowLabel">90</span> days)</label>
+          <input id="window" type="range" min="30" max="365" step="15" value="90" />
+          <label for="corr">Minimum |correlation|: <span id="corrLabel">0.3</span></label>
+          <input id="corr" type="range" min="0" max="1" step="0.05" value="0.3" />
+          <div class="pill" id="nodeSize">Node size: degree</div>
+          <div class="pill" id="edgeStrength">Edge: |corr| opacity & width</div>
+          <div class="badge" id="clusterLabel">Communities: 0</div>
+        </div>
+        <div class="control">
+          <h3>Ticker universe</h3>
+          <div class="ticker-input">
+            <input
+              id="tickerInput"
+              type="text"
+              placeholder="Add ticker or comma-separated list"
+              list="defaultTickers"
+            />
+            <button class="cta" id="addTicker"><i class="fa-solid fa-plus"></i></button>
+            <datalist id="defaultTickers"></datalist>
+          </div>
+          <div class="chip-set" id="tickerChips"></div>
+          <div style="display:flex; gap:8px; margin-top:10px;">
+            <button class="cta secondary" id="resetTickers">Reset to curated set</button>
+            <button class="cta" id="reload">Apply & reload</button>
+          </div>
+        </div>
+        <div class="control">
+          <h3>Sector legend</h3>
+          <div id="legend"></div>
+        </div>
+        <div class="control">
+          <h3>Telemetry</h3>
+          <div class="status info" id="statusBar"><span class="dot"></span><span>Waiting for data…</span></div>
+        </div>
+      </aside>
+      <main>
+        <svg id="graph"></svg>
+        <div id="tooltip" style="display: none"></div>
+        <div class="hud">
+          <div class="hud-card">
+            Avg |corr|
+            <strong id="avgCorr">–</strong>
+          </div>
+          <div class="hud-card">
+            Most connected
+            <strong id="topDegree">–</strong>
+          </div>
+          <div class="hud-card">
+            Influencer (betweenness)
+            <strong id="topBetweenness">–</strong>
+          </div>
+          <div class="hud-card">
+            Sector breadth
+            <strong id="sectorBreadth">–</strong>
+          </div>
+        </div>
+      </main>
+    </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
     <script>
@@ -193,9 +404,13 @@
         "#eab308",
         "#14b8a6",
         "#c084fc",
+        "#8b5cf6",
+        "#06b6d4",
       ];
 
       let data = { nodes: [], edges: [], metadata: {} };
+      let defaultTickers = [];
+      let selectedTickers = [];
       const svg = d3.select("#graph");
       const tooltip = d3.select("#tooltip");
       let simulation;
@@ -225,7 +440,7 @@
       function renderSparkline(container, points) {
         if (!points || !points.length) return;
         const width = container.clientWidth;
-        const height = 40;
+        const height = 42;
         const svg = d3
           .select(container)
           .append("svg")
@@ -260,7 +475,7 @@
               <div style="font-weight:700">${d.ticker} · ${d.name}</div>
               <div style="color:#9ca3af; font-size:12px">Sector: ${d.sector}</div>
             </div>
-            <div class="badge">${d.community}</div>
+            <div class="badge">Cluster ${d.community}</div>
           </div>
           <div class="stat-row"><span>Avg corr:</span><strong>${d.avg_corr.toFixed(3)}</strong></div>
           <div class="stat-row"><span>Betweenness:</span><strong>${d.betweenness.toFixed(3)}</strong></div>
@@ -274,6 +489,19 @@
         tooltip.style("display", "none").html("");
       }
 
+      function renderHUD(nodes, edges) {
+        if (!nodes.length) return;
+        const avgCorr = edges.length ? d3.mean(edges, (e) => Math.abs(e.corr)) : 0;
+        const topDegree = [...nodes].sort((a, b) => b.degree - a.degree)[0];
+        const topBetweenness = [...nodes].sort((a, b) => b.betweenness - a.betweenness)[0];
+        const sectors = new Set(nodes.map((n) => n.sector));
+
+        document.getElementById("avgCorr").textContent = avgCorr.toFixed(3);
+        document.getElementById("topDegree").textContent = `${topDegree.ticker} (${topDegree.degree.toFixed(0)})`;
+        document.getElementById("topBetweenness").textContent = `${topBetweenness.ticker} (${topBetweenness.betweenness.toFixed(3)})`;
+        document.getElementById("sectorBreadth").textContent = `${sectors.size} sectors`;
+      }
+
       function renderGraph() {
         const minCorr = parseFloat(document.getElementById("corr").value);
         const filteredEdges = data.edges.filter((e) => Math.abs(e.corr) >= minCorr);
@@ -282,20 +510,28 @@
           usedNodes.add(e.source);
           usedNodes.add(e.target);
         });
-        const nodes = data.nodes.filter((n) => usedNodes.has(n.id));
+        const nodes = data.nodes.filter((n) => usedNodes.size ? usedNodes.has(n.id) : true);
         document.getElementById("clusterLabel").textContent = `Communities: ${new Set(nodes.map((n) => n.community)).size}`;
         drawLegend(nodes);
+        renderHUD(nodes, filteredEdges);
 
         const width = svg.node().clientWidth;
         const height = svg.node().clientHeight;
         svg.selectAll("*").remove();
 
+        svg
+          .append("defs")
+          .append("filter")
+          .attr("id", "glow")
+          .html('<feGaussianBlur stdDeviation="3.5" result="coloredBlur"/><feMerge><feMergeNode in="coloredBlur"/><feMergeNode in="SourceGraphic"/></feMerge>');
+
         simulation?.stop();
         simulation = d3
           .forceSimulation(nodes)
           .force("link", d3.forceLink(filteredEdges).id((d) => d.id).distance((d) => 220 * (1 - Math.abs(d.corr))))
-          .force("charge", d3.forceManyBody().strength(-200))
-          .force("center", d3.forceCenter(width / 2, height / 2));
+          .force("charge", d3.forceManyBody().strength(-260))
+          .force("center", d3.forceCenter(width / 2, height / 2))
+          .force("collision", d3.forceCollide().radius((d) => 14 + d.degree * 1.3));
 
         const link = svg
           .append("g")
@@ -305,7 +541,8 @@
           .join("line")
           .attr("stroke", (d) => (d.corr >= 0 ? "#22c55e" : "#f87171"))
           .attr("stroke-width", (d) => 1 + Math.abs(d.corr) * 4)
-          .attr("stroke-opacity", (d) => 0.2 + Math.abs(d.corr) * 0.8);
+          .attr("stroke-opacity", (d) => 0.18 + Math.abs(d.corr) * 0.8)
+          .attr("filter", "url(#glow)");
 
         const node = svg
           .append("g")
@@ -316,6 +553,7 @@
           .attr("fill", (d) => sectorColor(d.sector))
           .attr("stroke", (d) => (d.betweenness > 0.05 ? "#fbbf24" : "#0b1120"))
           .attr("stroke-width", (d) => (d.betweenness > 0.05 ? 3 : 1))
+          .attr("opacity", 0.9)
           .on("pointerover", showTooltip)
           .on("pointerout", hideTooltip)
           .call(
@@ -360,13 +598,76 @@
         });
       }
 
+      function setStatus(message, tone = "info") {
+        const bar = document.getElementById("statusBar");
+        bar.className = `status ${tone}`;
+        bar.querySelector("span:nth-child(2)").textContent = message;
+      }
+
       async function fetchData() {
         const windowDays = document.getElementById("window").value;
         document.getElementById("windowLabel").textContent = windowDays;
-        const res = await fetch(`/api/galaxy?window_days=${windowDays}`);
+        const params = new URLSearchParams();
+        params.set("window_days", windowDays);
+        selectedTickers.forEach((t) => params.append("tickers", t));
+        setStatus("Fetching galaxy data…", "info");
+        const res = await fetch(`/api/galaxy?${params.toString()}`);
+        if (!res.ok) {
+          setStatus("API error – check ticker list or try again.", "error");
+          return;
+        }
         data = await res.json();
-        document.getElementById("meta").textContent = `${data.metadata.start} → ${data.metadata.end} | tickers: ${data.metadata.tickers.length}`;
+        selectedTickers = data.metadata.tickers || [];
+        document.getElementById("meta").textContent = `${data.metadata.start} → ${data.metadata.end} · tickers: ${data.metadata.tickers.length}`;
+        setStatus("Galaxy updated", "success");
+        renderTickerChips();
         renderGraph();
+      }
+
+      function renderTickerChips() {
+        const container = d3.select("#tickerChips");
+        const chips = container.selectAll("div.chip").data(selectedTickers);
+        chips.exit().remove();
+        const enter = chips.enter().append("div").attr("class", "chip");
+        enter.append("span");
+        enter
+          .append("button")
+          .attr("aria-label", "Remove ticker")
+          .html("<i class='fa-solid fa-xmark'></i>")
+          .on("click", (event, ticker) => {
+            event.stopPropagation();
+            selectedTickers = selectedTickers.filter((t) => t !== ticker);
+            renderTickerChips();
+          });
+        const merged = enter.merge(chips);
+        merged.select("span").text((d) => d);
+      }
+
+      function addTickersFromInput() {
+        const input = document.getElementById("tickerInput");
+        const raw = input.value;
+        if (!raw) return;
+        const parsed = raw
+          .split(/[,\s]+/)
+          .map((t) => t.trim().toUpperCase())
+          .filter(Boolean);
+        const merged = [...selectedTickers, ...parsed];
+        selectedTickers = Array.from(new Set(merged));
+        input.value = "";
+        renderTickerChips();
+      }
+
+      async function loadDefaults() {
+        const res = await fetch("/api/tickers");
+        if (!res.ok) return;
+        const json = await res.json();
+        defaultTickers = json.tickers || [];
+        const datalist = document.getElementById("defaultTickers");
+        datalist.innerHTML = defaultTickers.map((t) => `<option value="${t}"></option>`).join("");
+        if (!selectedTickers.length) {
+          selectedTickers = [...defaultTickers];
+        }
+        renderTickerChips();
       }
 
       document.getElementById("window").addEventListener("input", (e) => {
@@ -378,8 +679,23 @@
         renderGraph();
       });
       document.getElementById("reload").addEventListener("click", fetchData);
+      document.getElementById("addTicker").addEventListener("click", addTickersFromInput);
+      document.getElementById("tickerInput").addEventListener("keydown", (e) => {
+        if (e.key === "Enter") {
+          e.preventDefault();
+          addTickersFromInput();
+        }
+      });
+      document.getElementById("resetTickers").addEventListener("click", () => {
+        selectedTickers = [...defaultTickers];
+        renderTickerChips();
+      });
+      window.addEventListener("resize", renderGraph);
 
-      fetchData();
+      (async function bootstrap() {
+        await loadDefaults();
+        await fetchData();
+      })();
     </script>
   </body>
 </html>
