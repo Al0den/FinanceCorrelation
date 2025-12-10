@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Stock Galaxy</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+      integrity="sha512-IRZ8eIruoPbXsXQuicpnEuhDhagGzIB5VkDdUlvf7SgGbIu5d51lJ+mHuYCaNy1jhv9Q1kcY2Azc4J5kt52n1g=="
+      crossorigin="anonymous"
+    />
+    <style>
+      :root {
+        --bg: #0b1120;
+        --panel: #111827;
+        --text: #e5e7eb;
+        --muted: #9ca3af;
+        --accent: #38bdf8;
+        --danger: #f87171;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        font-family: "Inter", system-ui, -apple-system, sans-serif;
+        background: var(--bg);
+        color: var(--text);
+        display: grid;
+        grid-template-columns: 320px 1fr;
+        grid-template-rows: 70px 1fr;
+        height: 100vh;
+      }
+      header {
+        grid-column: 1 / span 2;
+        padding: 16px 20px;
+        background: var(--panel);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        border-bottom: 1px solid #1f2937;
+      }
+      header h1 {
+        margin: 0;
+        font-size: 20px;
+        letter-spacing: 0.2px;
+      }
+      #meta {
+        font-size: 13px;
+        color: var(--muted);
+      }
+      aside {
+        padding: 16px;
+        border-right: 1px solid #1f2937;
+        background: linear-gradient(180deg, #0f172a 0%, #0b1120 100%);
+        overflow-y: auto;
+      }
+      .control {
+        margin-bottom: 18px;
+      }
+      label {
+        display: block;
+        font-size: 13px;
+        color: var(--muted);
+        margin-bottom: 8px;
+      }
+      input[type="range"] {
+        width: 100%;
+      }
+      .pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 8px 10px;
+        background: #1f2937;
+        border-radius: 10px;
+        font-size: 13px;
+        margin-right: 8px;
+      }
+      main {
+        position: relative;
+      }
+      #graph {
+        width: 100%;
+        height: 100%;
+      }
+      #tooltip {
+        position: absolute;
+        background: rgba(17, 24, 39, 0.92);
+        color: var(--text);
+        padding: 10px 12px;
+        border-radius: 10px;
+        font-size: 13px;
+        pointer-events: none;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.45);
+        min-width: 240px;
+        border: 1px solid #1f2937;
+      }
+      #tooltip .sparkline {
+        height: 40px;
+        width: 100%;
+      }
+      #legend {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+        margin-top: 8px;
+      }
+      .legend-item {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 12px;
+        color: var(--muted);
+      }
+      .legend-swatch {
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        border: 1px solid #111827;
+      }
+      .stat-row {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 6px;
+        font-size: 12px;
+      }
+      .badge {
+        background: #14b8a6;
+        color: #0b1120;
+        padding: 4px 8px;
+        border-radius: 999px;
+        font-weight: 600;
+        font-size: 12px;
+      }
+      button {
+        width: 100%;
+        background: #1d4ed8;
+        border: none;
+        color: white;
+        border-radius: 10px;
+        padding: 12px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background 0.2s ease;
+      }
+      button:hover {
+        background: #2563eb;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div>
+        <h1>Stock Galaxy</h1>
+        <div id="meta">Loading...</div>
+      </div>
+      <div class="pill"><i class="fa-solid fa-burst"></i> Louvain-style clusters & centrality halos</div>
+    </header>
+    <aside>
+      <div class="control">
+        <label for="window">Lookback window (<span id="windowLabel">90</span> days)</label>
+        <input id="window" type="range" min="30" max="365" step="15" value="90" />
+      </div>
+      <div class="control">
+        <label for="corr">Minimum |correlation|: <span id="corrLabel">0.3</span></label>
+        <input id="corr" type="range" min="0" max="1" step="0.05" value="0.3" />
+      </div>
+      <div class="control">
+        <div class="pill" id="nodeSize">Node size: degree</div>
+        <div class="pill" id="edgeStrength">Edge: |corr| opacity & width</div>
+      </div>
+      <div class="control">
+        <div class="badge" id="clusterLabel">Communities: 0</div>
+      </div>
+      <button id="reload">Reload galaxy</button>
+      <div id="legend"></div>
+    </aside>
+    <main>
+      <svg id="graph"></svg>
+      <div id="tooltip" style="display: none"></div>
+    </main>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
+    <script>
+      const sectorPalette = [
+        "#38bdf8",
+        "#f97316",
+        "#22c55e",
+        "#a855f7",
+        "#f87171",
+        "#eab308",
+        "#14b8a6",
+        "#c084fc",
+      ];
+
+      let data = { nodes: [], edges: [], metadata: {} };
+      const svg = d3.select("#graph");
+      const tooltip = d3.select("#tooltip");
+      let simulation;
+
+      function sectorColor(sector) {
+        if (!sector) return "#6b7280";
+        const idx = Math.abs(
+          sector
+            .split("")
+            .reduce((acc, char) => acc + char.charCodeAt(0), 0)
+        ) % sectorPalette.length;
+        return sectorPalette[idx];
+      }
+
+      function drawLegend(nodes) {
+        const grouped = d3.group(nodes, (d) => d.sector || "Unknown");
+        const legend = d3.select("#legend").selectAll("div.legend-item").data(Array.from(grouped));
+        legend.exit().remove();
+        const enter = legend.enter().append("div").attr("class", "legend-item");
+        enter.append("div").attr("class", "legend-swatch");
+        enter.append("span");
+        const merged = enter.merge(legend);
+        merged.select(".legend-swatch").style("background", (d) => sectorColor(d[0]));
+        merged.select("span").text((d) => `${d[0]} (${d[1].length})`);
+      }
+
+      function renderSparkline(container, points) {
+        if (!points || !points.length) return;
+        const width = container.clientWidth;
+        const height = 40;
+        const svg = d3
+          .select(container)
+          .append("svg")
+          .attr("class", "sparkline")
+          .attr("width", width)
+          .attr("height", height);
+        const x = d3.scaleLinear().domain([0, points.length - 1]).range([4, width - 4]);
+        const y = d3
+          .scaleLinear()
+          .domain(d3.extent(points))
+          .range([height - 6, 6]);
+        const line = d3
+          .line()
+          .x((d, i) => x(i))
+          .y((d) => y(d));
+        svg
+          .append("path")
+          .datum(points)
+          .attr("fill", "none")
+          .attr("stroke", "#38bdf8")
+          .attr("stroke-width", 2)
+          .attr("d", line);
+      }
+
+      function showTooltip(event, d) {
+        tooltip.style("display", "block");
+        tooltip.style("left", `${event.clientX + 12}px`);
+        tooltip.style("top", `${event.clientY + 12}px`);
+        tooltip.html(`
+          <div style="display:flex; justify-content:space-between; align-items:center; gap:8px;">
+            <div>
+              <div style="font-weight:700">${d.ticker} · ${d.name}</div>
+              <div style="color:#9ca3af; font-size:12px">Sector: ${d.sector}</div>
+            </div>
+            <div class="badge">${d.community}</div>
+          </div>
+          <div class="stat-row"><span>Avg corr:</span><strong>${d.avg_corr.toFixed(3)}</strong></div>
+          <div class="stat-row"><span>Betweenness:</span><strong>${d.betweenness.toFixed(3)}</strong></div>
+          <div class="stat-row"><span>Eigenvector:</span><strong>${d.eigenvector.toFixed(3)}</strong></div>
+          <div class="sparkline"></div>
+        `);
+        renderSparkline(tooltip.select(".sparkline").node(), d.sparkline);
+      }
+
+      function hideTooltip() {
+        tooltip.style("display", "none").html("");
+      }
+
+      function renderGraph() {
+        const minCorr = parseFloat(document.getElementById("corr").value);
+        const filteredEdges = data.edges.filter((e) => Math.abs(e.corr) >= minCorr);
+        const usedNodes = new Set();
+        filteredEdges.forEach((e) => {
+          usedNodes.add(e.source);
+          usedNodes.add(e.target);
+        });
+        const nodes = data.nodes.filter((n) => usedNodes.has(n.id));
+        document.getElementById("clusterLabel").textContent = `Communities: ${new Set(nodes.map((n) => n.community)).size}`;
+        drawLegend(nodes);
+
+        const width = svg.node().clientWidth;
+        const height = svg.node().clientHeight;
+        svg.selectAll("*").remove();
+
+        simulation?.stop();
+        simulation = d3
+          .forceSimulation(nodes)
+          .force("link", d3.forceLink(filteredEdges).id((d) => d.id).distance((d) => 220 * (1 - Math.abs(d.corr))))
+          .force("charge", d3.forceManyBody().strength(-200))
+          .force("center", d3.forceCenter(width / 2, height / 2));
+
+        const link = svg
+          .append("g")
+          .attr("stroke-linecap", "round")
+          .selectAll("line")
+          .data(filteredEdges)
+          .join("line")
+          .attr("stroke", (d) => (d.corr >= 0 ? "#22c55e" : "#f87171"))
+          .attr("stroke-width", (d) => 1 + Math.abs(d.corr) * 4)
+          .attr("stroke-opacity", (d) => 0.2 + Math.abs(d.corr) * 0.8);
+
+        const node = svg
+          .append("g")
+          .selectAll("circle")
+          .data(nodes)
+          .join("circle")
+          .attr("r", (d) => 8 + d.degree * 1.5)
+          .attr("fill", (d) => sectorColor(d.sector))
+          .attr("stroke", (d) => (d.betweenness > 0.05 ? "#fbbf24" : "#0b1120"))
+          .attr("stroke-width", (d) => (d.betweenness > 0.05 ? 3 : 1))
+          .on("pointerover", showTooltip)
+          .on("pointerout", hideTooltip)
+          .call(
+            d3
+              .drag()
+              .on("start", (event, d) => {
+                if (!event.active) simulation.alphaTarget(0.3).restart();
+                d.fx = d.x;
+                d.fy = d.y;
+              })
+              .on("drag", (event, d) => {
+                d.fx = event.x;
+                d.fy = event.y;
+              })
+              .on("end", (event, d) => {
+                if (!event.active) simulation.alphaTarget(0);
+                d.fx = null;
+                d.fy = null;
+              })
+          );
+
+        const labels = svg
+          .append("g")
+          .selectAll("text")
+          .data(nodes)
+          .join("text")
+          .text((d) => d.ticker)
+          .attr("font-size", 12)
+          .attr("fill", "#e5e7eb")
+          .attr("text-anchor", "middle")
+          .attr("dy", 4)
+          .attr("pointer-events", "none");
+
+        simulation.on("tick", () => {
+          link
+            .attr("x1", (d) => d.source.x)
+            .attr("y1", (d) => d.source.y)
+            .attr("x2", (d) => d.target.x)
+            .attr("y2", (d) => d.target.y);
+          node.attr("cx", (d) => d.x).attr("cy", (d) => d.y);
+          labels.attr("x", (d) => d.x).attr("y", (d) => d.y - 15);
+        });
+      }
+
+      async function fetchData() {
+        const windowDays = document.getElementById("window").value;
+        document.getElementById("windowLabel").textContent = windowDays;
+        const res = await fetch(`/api/galaxy?window_days=${windowDays}`);
+        data = await res.json();
+        document.getElementById("meta").textContent = `${data.metadata.start} → ${data.metadata.end} | tickers: ${data.metadata.tickers.length}`;
+        renderGraph();
+      }
+
+      document.getElementById("window").addEventListener("input", (e) => {
+        document.getElementById("windowLabel").textContent = e.target.value;
+      });
+      document.getElementById("window").addEventListener("change", fetchData);
+      document.getElementById("corr").addEventListener("input", (e) => {
+        document.getElementById("corrLabel").textContent = e.target.value;
+        renderGraph();
+      });
+      document.getElementById("reload").addEventListener("click", fetchData);
+
+      fetchData();
+    </script>
+  </body>
+</html>
