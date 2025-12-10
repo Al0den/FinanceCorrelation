@@ -1,0 +1,62 @@
+{
+  "AAPL": {
+    "name": "Apple",
+    "sector": "Technology"
+  },
+  "MSFT": {
+    "name": "Microsoft",
+    "sector": "Technology"
+  },
+  "AMZN": {
+    "name": "Amazon com",
+    "sector": "Consumer Cyclical"
+  },
+  "GOOGL": {
+    "name": "Alphabet",
+    "sector": "Communication Services"
+  },
+  "META": {
+    "name": "Meta Platforms",
+    "sector": "Communication Services"
+  },
+  "NVDA": {
+    "name": "NVIDIA",
+    "sector": "Technology"
+  },
+  "BRK-B": {
+    "name": "Berkshire Hathaway",
+    "sector": "Financial Services"
+  },
+  "JPM": {
+    "name": "JPMorgan Chase &",
+    "sector": "Financial Services"
+  },
+  "XOM": {
+    "name": "Exxon Mobil",
+    "sector": "Energy"
+  },
+  "UNH": {
+    "name": "UnitedHealth Group",
+    "sector": "Healthcare"
+  },
+  "V": {
+    "name": "Visa",
+    "sector": "Financial Services"
+  },
+  "MA": {
+    "name": "Mastercard",
+    "sector": "Financial Services"
+  },
+  "HD": {
+    "name": "The Home Depot",
+    "sector": "Consumer Cyclical"
+  },
+  "PG": {
+    "name": "The Procter & Gamble",
+    "sector": "Consumer Defensive"
+  },
+  "KO": {
+    "name": "The Coca-Cola",
+    "sector": "Consumer Defensive"
+  }
+}

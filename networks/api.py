@@ -143,7 +143,7 @@ def galaxy(
 
 @app.get("/", response_class=HTMLResponse)
 def homepage() -> HTMLResponse:
-    index_path = StaticFiles(directory="networks/static").lookup_path("index.html")[1]
+    index_path = StaticFiles(directory="networks/static").lookup_path("index.html")[0]
     if not index_path:
         raise HTTPException(status_code=404, detail="UI not found")
     return HTMLResponse(Path(index_path).read_text())
