@@ -23,9 +23,11 @@ class PriceCache:
     ) -> None:
         self.cache_path = Path(cache_dir) / filename
         self.names_path = Path(cache_dir) / "names.json"
+        self.metadata_path = Path(cache_dir) / "metadata.json"
         self.cache_path.parent.mkdir(parents=True, exist_ok=True)
         self._cache = self._load_cache()
         self._names: Dict[str, str] = self._load_names()
+        self._metadata: Dict[str, Dict[str, str]] = self._load_metadata()
 
     def _load_cache(self) -> pd.DataFrame:
         if self.cache_path.exists():
@@ -39,6 +41,22 @@ class PriceCache:
     def _save_cache(self) -> None:
         self._cache.sort_index(inplace=True)
         self._cache.to_csv(self.cache_path)
+
+    def _load_metadata(self) -> Dict[str, Dict[str, str]]:
+        if self.metadata_path.exists():
+            try:
+                data = json.loads(self.metadata_path.read_text())
+                cleaned: Dict[str, Dict[str, str]] = {}
+                for ticker, meta in data.items():
+                    key = ticker.upper()
+                    name = self._clean_name(str(meta.get("name", key)), key)
+                    sector = str(meta.get("sector", "Unknown")) or "Unknown"
+                    cleaned[key] = {"name": name, "sector": sector}
+                self.metadata_path.write_text(json.dumps(cleaned, indent=2))
+                return cleaned
+            except json.JSONDecodeError:
+                return {}
+        return {}
 
     def _load_names(self) -> Dict[str, str]:
         if self.names_path.exists():
@@ -58,6 +76,9 @@ class PriceCache:
 
     def _save_names(self) -> None:
         self.names_path.write_text(json.dumps(self._names, indent=2))
+
+    def _save_metadata(self) -> None:
+        self.metadata_path.write_text(json.dumps(self._metadata, indent=2))
 
     @staticmethod
     def _clean_name(name: str, ticker: str) -> str:
@@ -86,6 +107,15 @@ class PriceCache:
         except Exception:
             return ticker
 
+    def _fetch_metadata(self, ticker: str) -> Dict[str, str]:
+        try:
+            info = yf.Ticker(ticker).get_info()
+        except Exception:
+            info = {}
+        name = info.get("longName") or info.get("shortName") or ticker
+        sector = info.get("sector") or "Unknown"
+        return {"name": self._clean_name(str(name), ticker), "sector": str(sector)}
+
     def _ensure_names(self, tickers: List[str]) -> None:
         updated = False
         for t in tickers:
@@ -97,11 +127,36 @@ class PriceCache:
         if updated:
             self._save_names()
 
+    def _ensure_metadata(self, tickers: List[str]) -> None:
+        updated = False
+        for t in tickers:
+            key = t.upper()
+            if key in self._metadata:
+                continue
+            self._metadata[key] = self._fetch_metadata(key)
+            updated = True
+        if updated:
+            self._save_metadata()
+
     def get_company_names(self, tickers: Iterable[str]) -> Dict[str, str]:
         tickers_list: List[str] = [t.strip().upper() for t in tickers if t.strip()]
         self._ensure_names(tickers_list)
         return {
             t: self._clean_name(self._names.get(t.upper(), t.upper()), t)
+            for t in tickers_list
+        }
+
+    def get_company_metadata(self, tickers: Iterable[str]) -> Dict[str, Dict[str, str]]:
+        tickers_list: List[str] = [t.strip().upper() for t in tickers if t.strip()]
+        self._ensure_metadata(tickers_list)
+        return {
+            t: {
+                "name": self._clean_name(
+                    self._metadata.get(t.upper(), {}).get("name", t),
+                    t,
+                ),
+                "sector": self._metadata.get(t.upper(), {}).get("sector", "Unknown"),
+            }
             for t in tickers_list
         }
 

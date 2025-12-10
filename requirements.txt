@@ -1,0 +1,6 @@
+fastapi>=0.110
+uvicorn[standard]>=0.24
+pandas>=2.0
+networkx>=3.2
+yfinance>=0.2
+matplotlib>=3.7
